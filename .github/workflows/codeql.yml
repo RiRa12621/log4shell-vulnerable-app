@@ -1,0 +1,12 @@
+name: Log4j CodeQL
+
+on: [push]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log4J CodeQL 
+        uses: github/codeql-action/init@v1 
+        with: 
+          languages: ${{ matrix.language }} 
+          queries: github/codeql/java/ql/src/experimental/Security/CWE/CWE-020/Log4jJndiInjection.ql@main  
