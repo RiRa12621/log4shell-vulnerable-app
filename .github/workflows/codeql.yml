@@ -3,10 +3,31 @@ name: Log4j CodeQL
 on: [push]
 jobs:
   scan:
+    
     runs-on: ubuntu-latest
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+    
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      
       - name: Log4J CodeQL 
         uses: github/codeql-action/init@v1 
         with: 
           languages: ${{ matrix.language }} 
           queries: github/codeql/java/ql/src/experimental/Security/CWE/CWE-020/Log4jJndiInjection.ql@main  
+      
+      - name: autobuild
+        uses: github/codeql-action/autobuild@v1
+
+      - name: Perform Analysis
+        uses: github/codeql-action/analyze@v1
